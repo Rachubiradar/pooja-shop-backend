@@ -31,9 +31,7 @@ const questioncontrol ={
 
     },
     data:async (req,res)=>{
-        console.log(req.user)
         try{
-            console.log("try")
             const user = await User.findById(req.user.id).select('-password')//.select('-name')
             if(!user)  return res.status(400).json({message:error.message})
             console.log(user)

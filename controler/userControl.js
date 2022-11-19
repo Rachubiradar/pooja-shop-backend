@@ -1,7 +1,9 @@
 const Users = require('../modules/userModel')
 const bcrypt = require('bcrypt')
+const Questions= require('../modules/questionModel')
 
 const jwt =require('jsonwebtoken')
+const { use } = require('../router/userRouter')
 
 
 const usercontrol ={
@@ -101,6 +103,43 @@ const usercontrol ={
         {
             return res.status(500).json({message:error.message})
         }
+    },
+    
+    anser:async (req,res)=>{
+        try{
+            const user = await Users.findById(req.user.id) 
+            if(!user)  return res.status(400).json({message:error.message})
+       await Users.findOneAndUpdate({_id:req.user.id},{
+        anser:req.body.anser
+       })
+       const user1 = await Users.findById(req.user.id) 
+
+            res.json(user1)
+
+        }
+        catch(error)
+        {
+            return res.status(500).json({message:error.message})
+        }
+        
+    },
+    result:async (req,res) =>{
+        try{
+            const user = await Users.findById(req.user.id) 
+            if(!user)  return res.status(400).json({message:error.message})
+            const marks = markscal({id:user._id})
+       await Users.findOneAndUpdate({_id:req.user.id},{
+        result:marks
+       })
+       const user1 = await Users.findById(req.user.id) 
+
+            res.json(user1)
+
+        }
+        catch(error)
+        {
+            return res.status(500).json({message:error.message})
+        }
     }
 }
 
@@ -111,6 +150,12 @@ const createRefreshToken =(user)=>
 const createAccessToken =(user)=>
 {
     return jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{expiresIn:'1d'})
+}
+const markscal =(id)=>{
+    const qusetion = Questions.find()
+    const user = Users.find({_id:id})
+    var r= 0
+    return  r
 }
 
 module.exports = usercontrol

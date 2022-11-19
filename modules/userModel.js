@@ -16,6 +16,9 @@ const userSchema = mongoose.Schema({
     anser:{
         type:Array,
         default:[]
+    },
+    result:{
+        type:String
     }
 },
 {timestamps:true})
