@@ -9,8 +9,5 @@ router.get('/logout',usercontrol.logout)
 router.get('/data',auth,usercontrol.data)
 router.patch('/anser',auth,usercontrol.anser)
 router.get('/result',auth,usercontrol.result)
-
-
-
-
 module.exports = router
+//aksdhay
