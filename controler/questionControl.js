@@ -1,9 +1,7 @@
 const Question = require('../modules/questionModel')
 const User = require('../modules/userModel')
 
-const bcrypt = require('bcrypt')
 
-const jwt =require('jsonwebtoken')
 
 
 const questioncontrol ={
