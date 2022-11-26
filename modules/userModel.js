@@ -4,6 +4,10 @@ const userSchema = mongoose.Schema({
         type:String,
         trim:true
     },
+    lastname:{
+        type:String,
+        trim:true
+    },
     email:{
         type:String, 
         require:true,
@@ -13,13 +17,6 @@ const userSchema = mongoose.Schema({
         type:String,
         require:true
     },
-    anser:{
-        type:Array,
-        default:[]
-    },
-    result:{
-        type:String
-    }
 },
 {timestamps:true})
 

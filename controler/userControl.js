@@ -8,10 +8,28 @@ const { use } = require('../router/userRouter')
 
 const usercontrol ={
     
+    getUser: async (req, res) =>{
+        console.log("getting users data")
+        try {
+            console.log(req.user.id)
+            const user = await Users.findById(req.user.id).select('-password')
+            if(!user) return res.status(400).json({msg: "User does not exist."})
+            res.json(user)
+        } catch (err) {
+            return res.status(500).json({msg: err.message})
+        }
+    }
+    ,
+    all:async (req,res)=>
+    {
+        const data = await Users.find({})
+        res.send(data)
+
+    },
     register:async (req,res)=>{
         try{
             console.log('post')
-            const {name,email,password} = req.body; 
+            const {name,lastname,email,password} = req.body; 
             const user = await Users.findOne({email})
             if(user)
                  return res.status(400).json({msg:"THIS EMAIL IS ALREADY EXISTS"})
@@ -20,7 +38,7 @@ const usercontrol ={
             
             const passwordhash = await bcrypt.hash(password,10)
             const newuser  = new Users({
-                name,email,password:passwordhash
+                name,lastname,email,password:passwordhash
             })
            
            // save mongodb
@@ -50,7 +68,7 @@ const usercontrol ={
             {
                 if(err) return res.status(400).json({message:"PLEASE LOGIN OR rEGISTER"})
                 const accesstoken = createAccessToken({id:user.id})
-                res.json({accesstoken })
+                res.json({accesstoken})
             })
            
         }catch(err){
@@ -71,10 +89,11 @@ const usercontrol ={
           res.cookie('refreshtoken',refreshtoken,
           {
             httpOnly:true,
-            path:'/user/refresh_token'
+            path:'/user/refresh_token',
+            maxAge:7*24*60*60*1000
 
           })
-            res.json({user,accesstoken})
+            res.json({accesstoken})
         }
         catch(err)
         {
