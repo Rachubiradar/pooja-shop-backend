@@ -1,5 +1,4 @@
 const router = require('express').Router()
-const questioncontrol  = require('../controler/questionControl')
 const auth =require('../middleware/auth')
 
 router.post('/add',questioncontrol.add)

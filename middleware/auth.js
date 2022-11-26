@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken')
 const Users = require('../modules/userModel')
 const auth = (req,res,next)=>{
+    console.log("auth")
     try{
-
         const token =req.header("Authorization")
         if(!token) return res.status(400).json({msg:"Invalid Authentication"});
         jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,(err,user) =>{

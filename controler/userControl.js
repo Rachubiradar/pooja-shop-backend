@@ -1,6 +1,5 @@
 const Users = require('../modules/userModel')
 const bcrypt = require('bcrypt')
-const Question= require('../modules/questionModel')
 
 const jwt =require('jsonwebtoken')
 const { use } = require('../router/userRouter')
@@ -22,11 +21,13 @@ const usercontrol ={
     ,
     all:async (req,res)=>
     {
+        console.log("all")
         const data = await Users.find({})
         res.send(data)
 
     },
     register:async (req,res)=>{
+        console.log("register")
         try{
             console.log('post')
             const {name,lastname,email,password} = req.body; 
@@ -50,17 +51,18 @@ const usercontrol ={
           res.cookie('refreshtoken',refreshtoken,
           {
             httpOnly:true,
-            path:'/user/refresh_token'
-
+            path:'/user/refresh_token',
+            maxAge:7*24*60*60*1000
           })
            res.json({accesstoken})
         }catch(err)
         {
-            return res.status(500).json({message:err.message})
+            return res.status(500).json({msg:err.message})
         }
 
     },
     refreshtoken:(req,res)=>{
+        console.log("refreshtoken")
         try{
             const rf_token = req.cookies.refreshtoken;
             if(!rf_token) return res.status(400).json({message:"Plase Login or Register"});
@@ -72,11 +74,12 @@ const usercontrol ={
             })
            
         }catch(err){
-            return res.status(500).json({message:err.message})
+            return res.status(500).json({msg:err.message})
 
         }
     },
     login:async (req,res) =>{
+        console.log("login")
         try{
             const {email,password} = req.body;
             const user = await Users.findOne({email})
@@ -97,37 +100,40 @@ const usercontrol ={
         }
         catch(err)
         {
-            return res.status(500).json({message:err.message})
+            return res.status(500).json({msg:err.message})
 
 
         }
     },
     logout:(req,res) =>{
+        console.log("logout")
         try {
             res.clearCookie('refreshtoken',{path:'/user/refresh_token'})
             return res.json({message:"Logout"})
         } catch (error) {
-            return res.status(500).json({message:error.message})
+            return res.status(500).json({msg:error.message})
 
             
         }
 
     },
     data:async (req,res)=>{
+        console.log("data")
         try{
             const user = await Users.findById(req.user.id).select('-password')//.select('-name')
-            if(!user)  return res.status(400).json({message:error.message})
+            if(!user)  return res.status(400).json({msg:error.message})
             res.json(user)
         }catch(error)
         {
-            return res.status(500).json({message:error.message})
+            return res.status(500).json({msg:error.message})
         }
     },
     
     anser:async (req,res)=>{
+        console.log("anser")
         try{
             const user = await Users.findById(req.user.id) 
-            if(!user)  return res.status(400).json({message:error.message})
+            if(!user)  return res.status(400).json({msg:error.message})
        await Users.findOneAndUpdate({_id:req.user.id},{
         anser:req.body.anser
        })
@@ -138,14 +144,15 @@ const usercontrol ={
         }
         catch(error)
         {
-            return res.status(500).json({message:error.message})
+            return res.status(500).json({msg:error.message})
         }
         
     },
     result:async (req,res) =>{
+        console.log("result")
         try{
             const user = await Users.findById(req.user.id) 
-            if(!user)  return res.status(400).json({message:error.message})
+            if(!user)  return res.status(400).json({msg:error.message})
             const question_ansers = await  Question.find()
             console.log(question_ansers)
        
@@ -154,7 +161,7 @@ const usercontrol ={
         }
         catch(error)
         {
-            return res.status(500).json({message:error.message})
+            return res.status(500).json({msg:error.message})
         }
     }
 }
