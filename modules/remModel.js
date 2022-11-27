@@ -12,7 +12,8 @@ const remSchema = mongoose.Schema({
     },
     date:{
         type:String,
-        trim:true
+        trim:true,
+        require:true
     },
     time:{
         type:String,
@@ -20,11 +21,14 @@ const remSchema = mongoose.Schema({
     },
     email:{
         type:String,
-        trim:true
+        trim:true,
+        require:true
+
     },
     phone:{
         type:String,
-        trim:true
+        trim:true,
+        require:true
     },
     called:{
         type:Boolean,

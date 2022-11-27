@@ -2,7 +2,8 @@ const mongoose = require('mongoose')
 const userSchema = mongoose.Schema({
     name:{
         type:String,
-        trim:true
+        trim:true,
+        require:true
     },
     lastname:{
         type:String,
@@ -10,7 +11,8 @@ const userSchema = mongoose.Schema({
     },
     phone:{
         type:String,
-        trim:true
+        trim:true,
+        require:true
     },
     email:{
         type:String, 

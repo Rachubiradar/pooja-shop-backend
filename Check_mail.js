@@ -1,14 +1,13 @@
 const mongoose = require('mongoose')
 require('dotenv').config()
-
 const Users =require('./modules/userModel')
 const Rems = require('./modules/remModel')
 var nodemailer = require('nodemailer');
 const    check= async ()=>
 {
-    console.log('function calling');
+
     const reminders = await Rems.find({mailed:false})
-    console.log(reminders) 
+//    console.log(reminders) 
     const date_ = new Date();
     const date = date_.getTime();
     var transporter = nodemailer.createTransport({
@@ -39,7 +38,7 @@ const    check= async ()=>
                     const data_text = '<div style="border-width: 1px;border-color: black;border: solid;background-color: rgb(106, 220, 118);text-align: center;"><h1 style="color:blue;font-weight:400;" >'+reminders[i].header+'</h1><h3>'+reminders[i].about+'</h3><h3 style="color: red;" >Date:'+reminders[i].date+'</h3><h3>Time :'+reminders[i].time+'</h3></div>';
                     var mailOptions = {
                       from: process.env.Email,
-                      to: 'rachappabiradar6@gmail.com',
+                      to: reminders[i].email,
                       subject: reminders[i].header,
                       html: data_text
                     };
