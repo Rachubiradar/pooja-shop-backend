@@ -11,7 +11,10 @@ const remcontrol ={
             const {header,about,date,time}= req.body;
             const email = user.email;
             const phone = user.phone;
-            const newrem = new Rems({header,about,date,time,email,phone})
+            const called = false;
+            const mailed = false;
+
+            const newrem = new Rems({header,about,date,time,email,phone,called,mailed})
             await newrem.save();
             
 

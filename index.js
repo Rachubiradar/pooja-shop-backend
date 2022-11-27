@@ -5,8 +5,6 @@ const cors = require('cors')
 const fileUpload = require('express-fileupload')
 const cookieParser = require('cookie-parser')
 const fun = require('./Check')
-
-
 const check = require('./Check').default
 
 const app = express()

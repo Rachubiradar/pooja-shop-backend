@@ -25,6 +25,14 @@ const remSchema = mongoose.Schema({
     phone:{
         type:String,
         trim:true
+    },
+    called:{
+        type:Boolean,
+        require:true
+    },
+    mailed:{
+        type:Boolean,
+        require:true
     }
 },
     {timestamps:true})
