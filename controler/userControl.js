@@ -1,19 +1,33 @@
 const Users = require('../modules/userModel')
 const bcrypt = require('bcrypt')
+const Rems = require('../modules/remModel')
 
 const jwt =require('jsonwebtoken')
 const { use } = require('../router/userRouter')
 
 
 const usercontrol ={
-    
+    change:async (req,res) =>{
+        try {
+            console.log("change")
+            const {name,lastname,email}= req.body;            
+            const user = await Users.findByIdAndUpdate({_id:req.user.id},{name:req.body.name,lastname:req.body.lastname,phone:req.body.phone,email:req.body.email})
+            if(!user) return res.status(400).json({msg: "User does not exist."})
+            res.json({user})
+        } catch (err) {
+            return res.status(500).json({msg: err.message})
+        }
+    }
+    ,
     getUser: async (req, res) =>{
         console.log("getting users data")
         try {
             console.log(req.user.id)
             const user = await Users.findById(req.user.id).select('-password')
             if(!user) return res.status(400).json({msg: "User does not exist."})
-            res.json(user)
+            const rem = await Rems.find({email:user.email})
+           
+            res.json({user,rem})
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }
@@ -30,7 +44,7 @@ const usercontrol ={
         console.log("register")
         try{
             console.log('post')
-            const {name,lastname,email,password} = req.body; 
+            const {name,lastname,phone,email,password} = req.body; 
             const user = await Users.findOne({email})
             if(user)
                  return res.status(400).json({msg:"THIS EMAIL IS ALREADY EXISTS"})
@@ -39,7 +53,7 @@ const usercontrol ={
             
             const passwordhash = await bcrypt.hash(password,10)
             const newuser  = new Users({
-                name,lastname,email,password:passwordhash
+                name,lastname,phone,email,password:passwordhash
             })
            
            // save mongodb

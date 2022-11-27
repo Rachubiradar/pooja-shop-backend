@@ -4,9 +4,10 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
 const cookieParser = require('cookie-parser')
+const fun = require('./Check')
 
 
-
+const check = require('./Check').default
 
 const app = express()
 app.use(cookieParser())
@@ -21,12 +22,13 @@ mongoose.connect(process.env.MONGODB_URI,  err =>{
 }
 )
 
+
 //Router
 app.use('/user',require('./router/userRouter'))
-app.use('/question',require('./router/questionRouter'))
+app.use('/rem',require('./router/RemRouter'))
 
 
-
+console.log(fun.check())
 
 
 app.get('/',function(req,res)
@@ -35,6 +37,7 @@ app.get('/',function(req,res)
 })
 app.listen(process.env.PORT,err=>{
     console.log('Server running')
+    
 })
 
  
