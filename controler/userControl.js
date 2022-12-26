@@ -1,17 +1,50 @@
 const Users = require('../modules/userModel')
 const bcrypt = require('bcrypt')
-const Question= require('../modules/questionModel')
+const Rems = require('../modules/remModel')
 
 const jwt =require('jsonwebtoken')
 const { use } = require('../router/userRouter')
 
 
 const usercontrol ={
-    
+    change:async (req,res) =>{
+        try {
+            console.log("change")
+            const {name,lastname,email}= req.body;            
+            const user = await Users.findByIdAndUpdate({_id:req.user.id},{name:req.body.name,lastname:req.body.lastname,phone:req.body.phone,email:req.body.email})
+            if(!user) return res.status(400).json({msg: "User does not exist."})
+            res.json({user})
+        } catch (err) {
+            return res.status(500).json({msg: err.message})
+        }
+    }
+    ,
+    getUser: async (req, res) =>{
+        console.log("getting users data")
+        try {
+            console.log(req.user.id)
+            const user = await Users.findById(req.user.id).select('-password')
+            if(!user) return res.status(400).json({msg: "User does not exist."})
+            const rem = await Rems.find({email:user.email})
+           
+            res.json({user,rem})
+        } catch (err) {
+            return res.status(500).json({msg: err.message})
+        }
+    }
+    ,
+    all:async (req,res)=>
+    {
+        console.log("all")
+        const data = await Users.find({})
+        res.send(data)
+
+    },
     register:async (req,res)=>{
+        console.log("register")
         try{
             console.log('post')
-            const {name,email,password} = req.body; 
+            const {name,lastname,phone,email,password} = req.body; 
             const user = await Users.findOne({email})
             if(user)
                  return res.status(400).json({msg:"THIS EMAIL IS ALREADY EXISTS"})
@@ -20,7 +53,7 @@ const usercontrol ={
             
             const passwordhash = await bcrypt.hash(password,10)
             const newuser  = new Users({
-                name,email,password:passwordhash
+                name,lastname,phone,email,password:passwordhash
             })
            
            // save mongodb
@@ -32,17 +65,18 @@ const usercontrol ={
           res.cookie('refreshtoken',refreshtoken,
           {
             httpOnly:true,
-            path:'/user/refresh_token'
-
+            path:'/user/refresh_token',
+            maxAge:7*24*60*60*1000
           })
            res.json({accesstoken})
         }catch(err)
         {
-            return res.status(500).json({message:err.message})
+            return res.status(500).json({msg:err.message})
         }
 
     },
     refreshtoken:(req,res)=>{
+        console.log("refreshtoken")
         try{
             const rf_token = req.cookies.refreshtoken;
             if(!rf_token) return res.status(400).json({message:"Plase Login or Register"});
@@ -50,15 +84,16 @@ const usercontrol ={
             {
                 if(err) return res.status(400).json({message:"PLEASE LOGIN OR rEGISTER"})
                 const accesstoken = createAccessToken({id:user.id})
-                res.json({accesstoken })
+                res.json({accesstoken})
             })
            
         }catch(err){
-            return res.status(500).json({message:err.message})
+            return res.status(500).json({msg:err.message})
 
         }
     },
     login:async (req,res) =>{
+        console.log("login")
         try{
             const {email,password} = req.body;
             const user = await Users.findOne({email})
@@ -71,44 +106,48 @@ const usercontrol ={
           res.cookie('refreshtoken',refreshtoken,
           {
             httpOnly:true,
-            path:'/user/refresh_token'
+            path:'/user/refresh_token',
+            maxAge:7*24*60*60*1000
 
           })
-            res.json({user,accesstoken})
+            res.json({accesstoken})
         }
         catch(err)
         {
-            return res.status(500).json({message:err.message})
+            return res.status(500).json({msg:err.message})
 
 
         }
     },
     logout:(req,res) =>{
+        console.log("logout")
         try {
             res.clearCookie('refreshtoken',{path:'/user/refresh_token'})
             return res.json({message:"Logout"})
         } catch (error) {
-            return res.status(500).json({message:error.message})
+            return res.status(500).json({msg:error.message})
 
             
         }
 
     },
     data:async (req,res)=>{
+        console.log("data")
         try{
             const user = await Users.findById(req.user.id).select('-password')//.select('-name')
-            if(!user)  return res.status(400).json({message:error.message})
+            if(!user)  return res.status(400).json({msg:error.message})
             res.json(user)
         }catch(error)
         {
-            return res.status(500).json({message:error.message})
+            return res.status(500).json({msg:error.message})
         }
     },
     
     anser:async (req,res)=>{
+        console.log("anser")
         try{
             const user = await Users.findById(req.user.id) 
-            if(!user)  return res.status(400).json({message:error.message})
+            if(!user)  return res.status(400).json({msg:error.message})
        await Users.findOneAndUpdate({_id:req.user.id},{
         anser:req.body.anser
        })
@@ -119,14 +158,15 @@ const usercontrol ={
         }
         catch(error)
         {
-            return res.status(500).json({message:error.message})
+            return res.status(500).json({msg:error.message})
         }
         
     },
     result:async (req,res) =>{
+        console.log("result")
         try{
             const user = await Users.findById(req.user.id) 
-            if(!user)  return res.status(400).json({message:error.message})
+            if(!user)  return res.status(400).json({msg:error.message})
             const question_ansers = await  Question.find()
             console.log(question_ansers)
        
@@ -135,7 +175,7 @@ const usercontrol ={
         }
         catch(error)
         {
-            return res.status(500).json({message:error.message})
+            return res.status(500).json({msg:error.message})
         }
     }
 }

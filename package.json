@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@vonage/server-sdk": "^3.0.9",
     "bcrypt": "^5.1.0",
     "cloudinary": "^1.32.0",
     "cookie-parser": "^1.4.6",
@@ -10,6 +11,7 @@
     "install": "^0.13.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.7.2",
+    "nodemailer": "^6.8.0",
     "nodemon": "^2.0.20"
   },
   "name": "ab",
@@ -29,6 +31,5 @@
   "bugs": {
     "url": "https://github.com/rachappa-web-tech/AB/issues"
   },
-  "homepage": "https://github.com/rachappa-web-tech/AB#readme",
-  "devDependencies": {}
+  "homepage": "https://github.com/rachappa-web-tech/AB#readme"
 }

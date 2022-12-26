@@ -2,7 +2,17 @@ const mongoose = require('mongoose')
 const userSchema = mongoose.Schema({
     name:{
         type:String,
+        trim:true,
+        require:true
+    },
+    lastname:{
+        type:String,
         trim:true
+    },
+    phone:{
+        type:String,
+        trim:true,
+        require:true
     },
     email:{
         type:String, 
@@ -12,13 +22,6 @@ const userSchema = mongoose.Schema({
     password:{
         type:String,
         require:true
-    },
-    anser:{
-        type:Array,
-        default:[]
-    },
-    result:{
-        type:String
     }
 },
 {timestamps:true})
