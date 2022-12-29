@@ -6,5 +6,7 @@ router.post('/login',shopownercontrol.login)
 router.post('/add',auth,shopownercontrol.add)
 router.get('/cart',auth,shopownercontrol.cart)
 router.get('/info',auth,shopownercontrol.info)
+router.get('/all',shopownercontrol.all)
+
 router.patch('/redata',auth,shopownercontrol.redata)
 module.exports = router

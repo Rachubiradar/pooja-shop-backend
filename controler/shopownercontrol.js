@@ -79,13 +79,13 @@ const shopownercontrol ={
     add:async (req,res) =>{
         console.log("add")
         try{
-            const {name,about,prize,url} = await req.body;
+            const {name,about,prize,url,N} = await req.body;
             //console.log(name)
            // console.log(req.user.id)
 
             const shopowner  = await Users.findById({"_id":req.user.id}) 
           //  console.log(shopowner)
-            const newproduct = new Products({name,about,prize,"email":shopowner.email,url})
+            const newproduct = new Products({name,about,prize,"email":shopowner.email,url,N})
           //  console.log(newproduct)
             await newproduct.save();
             res.json({newproduct})

@@ -161,6 +161,23 @@ const shopownercontrol ={
 
         }
     
+    } ,
+    all:async (req,res)=>{
+        console.log("all products")
+        try{
+         
+
+            const data  = await Products.find({})
+            
+            res.json({"products":data,"pooja":data})
+        }
+        catch(err)
+        {
+            return res.status(500).json({msg:err.message})
+
+
+        }
+    
     }  
 }
 

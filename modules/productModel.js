@@ -8,7 +8,12 @@ const productSchema = mongoose.Schema({
     },
     about:{
         type:String,
+        required:true,
         trim:true
+    },
+    N:{
+        type:String,
+        required:true
     },
     prize:{
         type:String,
