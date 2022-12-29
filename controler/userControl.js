@@ -119,14 +119,13 @@ const usercontrol ={
 
         }
     },
-    logout:(req,res) =>{
+    logout:async (req,res) =>{
         console.log("logout")
         try {
-            res.clearCookie('refreshtoken',{path:'/user/refresh_token'})
+          await  res.clearCookie('refreshtoken',{path:'/user/refresh_token'})
             return res.json({message:"Logout"})
         } catch (error) {
             return res.status(500).json({msg:error.message})
-
             
         }
 

@@ -22,8 +22,12 @@ mongoose.connect(process.env.MONGODB_URI,  err =>{
 
 
 //Router
+app.use('/prist',require('./router/prist'))
+app.use('/customer',require('./router/cutomer'))
+app.use('/shopowner',require('./router/shop_owner'))
 app.use('/user',require('./router/userRouter'))
 app.use('/rem',require('./router/RemRouter'))
+
 
 
 console.log(fun_mail.check() );

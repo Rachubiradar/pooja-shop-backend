@@ -1,10 +1,9 @@
 const mongoose = require('mongoose')
-
-const userSchema = mongoose.Schema({
+const poojaSchema = mongoose.Schema({
     name:{
         type:String,
         trim:true,
-        require:true
+       // require:true
     },
     lastname:{
         type:String,
@@ -13,7 +12,7 @@ const userSchema = mongoose.Schema({
     phone:{
         type:String,
         trim:true,
-        require:true
+       // require:true
     },
     email:{
         type:String, 
@@ -23,8 +22,18 @@ const userSchema = mongoose.Schema({
     password:{
         type:String,
         require:true
-    }
+    },
+  age:{
+  type:String
+  },
+  zip: {
+    type: Number,
+    trim: true,
+  },
+  add:{
+    type:String
+  }
 },
 {timestamps:true})
 
-module.exports = mongoose.model('Users',userSchema)
+module.exports = mongoose.model('Pooja',poojaSchema)
